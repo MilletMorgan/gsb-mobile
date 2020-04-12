@@ -2,12 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const cors = require('cors');
+const qs = require('qs');
 
-const connection = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'gsb'
+const pool = mysql.createPool({
+	host: 'localhost',
+	user: 'root',
+	password: '',
+	database: 'gsb',
 });
 
 const app = express();
@@ -17,31 +18,41 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 app.get('/get-type', function (req, res) {
-    connection.getConnection(function (err, connection) {
-        connection.query('SELECT * FROM type_ff', function (error, results) {
-            if (error) throw error;
+	console.log('in get request');
+	pool.getConnection(function (err, connection) {
+		if(err) {
+			console.log(err);
+			return
+		}
 
-            res.send(results)
-        });
-    });
+		connection.query('SELECT * FROM type_ff', function (err, results) {
+			if (err) throw err;
+
+			// Getting the 'response' from the database and sending it to our route. This is were the data is.
+			res.send(results)
+		});
+	});
 });
 
 app.post('/post-type', function (req, res) {
-    const label = req.body.label;
-    const montant = req.body.montant;
+	const label = req.body.label;
+	const montant = req.body.montant;
+	console.log('in post request');
 
-    connection.getConnection(function (error) {
-        if (error) throw error;
 
-        const sql = "INSERT INTO type_ff(label, montant) VALUES ('" + label + "', '" + montant + "')";
-        connection.query(sql, function (error) {
-            if (error) throw error;
+	pool.getConnection(function (err) {
+		if (err) throw new err;
 
-            res.send('POST Request')
-        })
-    });
+		const sql = "INSERT INTO type_ff(label, montant) VALUES ('" + label + "', '" + montant + "')";
+		pool.query(sql, function (err, result) {
+			if (err) throw err;
+
+			// console.log("1 record inserted, result : ");
+			res.send(result)
+		})
+	});
 });
 
 app.listen(3000, () => {
-    console.log('Server run on http://localhost:3000');
+	console.log('Server run on http://localhost:3000');
 });

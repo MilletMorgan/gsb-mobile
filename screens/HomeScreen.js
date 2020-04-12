@@ -1,12 +1,12 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { Button, Platform, StyleSheet, Text, View, FlatList } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import {Button, Platform, StyleSheet, Text, View, FlatList, SafeAreaView} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
 
-import { MonoText } from '../components/StyledText';
+// import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
-import { getTypesFromBdd } from "../BDD/getData";
-import { TypeItem } from "../components/TypeItem"
+import {getTypesFromBdd} from "../BDD/getData";
+import {TypeItem} from "../components/TypeItem"
 
 class HomeScreen extends React.Component {
 
@@ -39,21 +39,16 @@ class HomeScreen extends React.Component {
 						<Text>Mes types de frais forfait</Text>
 						<Button title='Recharger les données' onPress={() => this._loadTypes()}/>
 
-						<FlatList
-							data={this.state.types}
-							keyExtractor={(item) => item.id.toString()}
-							renderItem={({item}) => <TypeItem type={item}/>}
-						/>
+						<SafeAreaView style={{flex: 1}}>
+							<FlatList
+								data={this.state.types}
+								keyExtractor={(item) => item.id.toString()}
+								renderItem={({item}) => <TypeItem type={item}/>}
+								numColumns={2}
+							/>
+						</SafeAreaView>
 					</View>
 				</ScrollView>
-
-				<View style={styles.tabBarInfoContainer}>
-					<Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
-
-					<View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-						<MonoText style={styles.codeHighlightText}>navigation/BottomTabNavigator.js</MonoText>
-					</View>
-				</View>
 			</View>
 		);
 	}
@@ -153,7 +148,7 @@ const styles = StyleSheet.create({
 		...Platform.select({
 			ios: {
 				shadowColor: 'black',
-				shadowOffset: { width: 0, height: -3 },
+				shadowOffset: {width: 0, height: -3},
 				shadowOpacity: 0.1,
 				shadowRadius: 3,
 			},

@@ -1,5 +1,5 @@
 export function getTypesFromBdd() {
-    return fetch('http://localhost:3000/get-type', {
+    return fetch('http://5d71cc7d.ngrok.io/get-type', {
         mode: 'cors'
     })
         .then((response) => response.json())
