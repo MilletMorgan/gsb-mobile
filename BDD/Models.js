@@ -1,6 +1,18 @@
-const url = 'http://c93d772c.ngrok.io';
+import Axios from "axios";
+
+const url = 'http://a146052e.ngrok.io';
 
 export function getTypesFromBdd() {
+	// return Axios({
+	// 	method: "GET",
+	// 	url: url + '/get-type',
+	// 	mode: 'cors',
+	// 	headers: {
+	// 		"Content-Type": "application/json"
+	// 	}
+	// }).then((response) => response.json())
+	// 	.catch((error) => console.log(error))
+
 	return fetch(url + '/get-type', {
 		mode: 'cors'
 	})

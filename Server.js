@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const cors = require('cors');
-const qs = require('qs');
+const axios = require('axios');
 
 const pool = mysql.createPool({
 	host: 'localhost',
@@ -16,6 +16,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
 
 app.get('/get-type', function (req, res) {
 	console.log('in get request');
